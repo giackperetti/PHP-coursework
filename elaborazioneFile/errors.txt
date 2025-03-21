@@ -1,0 +1,3 @@
+ERR_CAMPI: Riga 13 non valida! Campi mancanti o vuoti.
+ERR_DATA: Stephen_Hawking - Data di nascita non valida:  08/21/1942 
+ERR_CAMPI: Riga 20 non valida! Campi mancanti o vuoti.
