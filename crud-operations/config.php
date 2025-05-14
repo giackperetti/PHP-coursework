@@ -5,7 +5,8 @@ if (session_status() === PHP_SESSION_NONE) {
 
 function checkAuth()
 {
-    if (!isset($_SESSION['user_id'])) {
+    // if (!isset($_SESSION['user_id'])) {
+    if (!isset($_COOKIE['user_id'])) {
         header("Location: login.php");
         exit();
     }

@@ -11,7 +11,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
         if (password_verify($password, $user['Password'])) {
-            $_SESSION['user_id'] = $user['IDPersona'];
+            // $_SESSION['user_id'] = $user['IDPersona'];
+            setcookie("user_id", $user['IDPersona'], time()+60*60*24*30, "/");
             header("Location: index.php");
             exit();
         }
