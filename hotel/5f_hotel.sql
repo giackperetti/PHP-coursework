@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: May 14, 2025 at 11:13 AM
+-- Generation Time: May 28, 2025 at 11:15 AM
 -- Server version: 8.0.35
 -- PHP Version: 8.2.20
 
@@ -54,6 +54,59 @@ INSERT INTO `hotel` (`ID`, `Denominazione`, `Localita`, `Indirizzo`, `Telefono`,
 (9, 'Grand Hotel Milano', 'Milano', 'Corso Buenos Aires 55', '0287654321', 5, 120, 'grand_hotel.jpeg'),
 (10, 'Locanda del Lago', 'Como', 'Via Lario 18', '0312233445', 3, 25, 'locanda.jpeg');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `prenotazioni`
+--
+
+CREATE TABLE `prenotazioni` (
+  `ID` int NOT NULL,
+  `UtenteID` int NOT NULL,
+  `StanzaID` int NOT NULL,
+  `DataInizio` date NOT NULL,
+  `DataFine` date NOT NULL,
+  `DataPrenotazione` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `Stato` enum('confermata','annullata') DEFAULT 'confermata'
+) ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stanze`
+--
+
+CREATE TABLE `stanze` (
+  `ID` int NOT NULL,
+  `HotelID` int NOT NULL,
+  `NumeroStanza` varchar(10) NOT NULL,
+  `TipoStanza` enum('singola','doppia') NOT NULL,
+  `Prezzo` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `utenti`
+--
+
+CREATE TABLE `utenti` (
+  `ID` int NOT NULL,
+  `Nome` varchar(250) NOT NULL,
+  `Cognome` varchar(250) NOT NULL,
+  `Email` varchar(250) NOT NULL,
+  `Telefono` varchar(250) NOT NULL,
+  `Password` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `utenti`
+--
+
+INSERT INTO `utenti` (`ID`, `Nome`, `Cognome`, `Email`, `Telefono`, `Password`) VALUES
+(1, 'Luca', 'Bianchi', 'luca.bianchi@example.com', '3331234567', '$2y$10$x3qISti14gOCyQV1AsRS2.6LE0J2LPMO4a97oUB0P841GBfv10.Qa'),
+(2, 'Giulia', 'Rossi', 'giulia.rossi@example.com', '3337654321', '$2y$10$A5ERYb9YlDfPjPEJgNAdAOdZtzj8xaDnutLtLhOiLzYnDidcwqZT2');
+
 --
 -- Indexes for dumped tables
 --
@@ -63,6 +116,61 @@ INSERT INTO `hotel` (`ID`, `Denominazione`, `Localita`, `Indirizzo`, `Telefono`,
 --
 ALTER TABLE `hotel`
   ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `prenotazioni`
+--
+ALTER TABLE `prenotazioni`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `UtenteID` (`UtenteID`),
+  ADD KEY `idx_prenotazioni_dates` (`StanzaID`,`DataInizio`,`DataFine`,`Stato`);
+
+--
+-- Indexes for table `stanze`
+--
+ALTER TABLE `stanze`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `unique_room_per_hotel` (`HotelID`,`NumeroStanza`),
+  ADD KEY `idx_stanze_hotel` (`HotelID`);
+
+--
+-- Indexes for table `utenti`
+--
+ALTER TABLE `utenti`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `prenotazioni`
+--
+ALTER TABLE `prenotazioni`
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `stanze`
+--
+ALTER TABLE `stanze`
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `prenotazioni`
+--
+ALTER TABLE `prenotazioni`
+  ADD CONSTRAINT `prenotazioni_ibfk_1` FOREIGN KEY (`UtenteID`) REFERENCES `utenti` (`ID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `prenotazioni_ibfk_2` FOREIGN KEY (`StanzaID`) REFERENCES `stanze` (`ID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `stanze`
+--
+ALTER TABLE `stanze`
+  ADD CONSTRAINT `stanze_ibfk_1` FOREIGN KEY (`HotelID`) REFERENCES `hotel` (`ID`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
