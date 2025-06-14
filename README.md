@@ -1,6 +1,6 @@
 # PHP Coursework
 
 This repo contains the code i wrote throughout my 5th year of highschool in my computer science classes.
-We used `XAMPP`(`MAMP` on MacOS) to simplify the process of running `PHP` code interacting with a `MySQL` database.
+We worked on `PHP` web apps interacting with `MySQL` databases.
 
-The exercises go over most of the commonly used features of `PHP`, ranging from the basics to cookies and session variables.
+The exercises go over most of the commonly used features of `PHP`, ranging from the basics to cookies and session handling.
